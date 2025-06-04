@@ -137,3 +137,123 @@ router.delete('/:id', async (req: Request, res: Response) => {
 });
 
 export default router;
+
+/**
+ * @swagger
+ * tags:
+ * name: Tasks
+ * description: Gestión de Tareas
+ */
+
+/**
+ * @swagger
+ * /tasks:
+ * get:
+ * summary: Obtiene todas las tareas (mezcladas de fuente externa y Firebase)
+ * tags: [Tasks]
+ * responses:
+ * 200:
+ * description: Lista de tareas obtenida exitosamente.
+ * content:
+ * application/json:
+ * schema:
+ * type: array
+ * items:
+ * $ref: '#/components/schemas/Task'
+ * 500:
+ * description: Error del servidor.
+ */
+router.get('/', async (req: Request, res: Response) => { /* ... */ });
+
+/**
+ * @swagger
+ * /tasks:
+ * post:
+ * summary: Crea una nueva tarea (en Firebase y opcionalmente en servicio externo)
+ * tags: [Tasks]
+ * requestBody:
+ * required: true
+ * content:
+ * application/json:
+ * schema:
+ * $ref: '#/components/schemas/NewTaskRequest'
+ * responses:
+ * 201:
+ * description: Tarea creada exitosamente.
+ * content:
+ * application/json:
+ * schema:
+ * type: object # O define un esquema específico para esta respuesta combinada
+ * properties:
+ * firestoreTask:
+ * $ref: '#/components/schemas/Task'
+ * externalTask:
+ * $ref: '#/components/schemas/Task'
+ * externalTaskMessage:
+ * type: string
+ * 400:
+ * description: Datos de entrada inválidos.
+ * 500:
+ * description: Error del servidor.
+ */
+router.post('/', async (req: Request, res: Response) => { /* ... */ });
+
+/**
+ * @swagger
+ * /tasks/{id}:
+ * put:
+ * summary: Actualiza una tarea existente (en servicio externo)
+ * tags: [Tasks]
+ * parameters:
+ * - in: path
+ * name: id
+ * schema:
+ * type: string # o integer si el ID externo siempre es numérico
+ * required: true
+ * description: ID de la tarea a actualizar (del servicio externo)
+ * requestBody:
+ * required: true
+ * content:
+ * application/json:
+ * schema:
+ * $ref: '#/components/schemas/UpdateTaskRequest'
+ * responses:
+ * 200:
+ * description: Tarea actualizada exitosamente.
+ * content:
+ * application/json:
+ * schema:
+ * $ref: '#/components/schemas/Task'
+ * 400:
+ * description: ID inválido o datos de entrada inválidos.
+ * 404:
+ * description: Tarea no encontrada en el servicio externo.
+ * 500:
+ * description: Error del servidor.
+ */
+router.put('/:id', async (req: Request, res: Response) => { /* ... */ });
+
+/**
+ * @swagger
+ * /tasks/{id}:
+ * delete:
+ * summary: Elimina una tarea (del servicio externo)
+ * tags: [Tasks]
+ * parameters:
+ * - in: path
+ * name: id
+ * schema:
+ * type: string # o integer
+ * required: true
+ * description: ID de la tarea a eliminar (del servicio externo)
+ * responses:
+ * 204:
+ * description: Tarea eliminada exitosamente.
+ * 400:
+ * description: ID inválido.
+ * 404:
+ * description: Tarea no encontrada en el servicio externo.
+ * 500:
+ * description: Error del servidor.
+ */
+router.delete('/:id', async (req: Request, res: Response) => { /* ... */ });
